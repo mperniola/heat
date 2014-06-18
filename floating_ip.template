@@ -1,6 +1,6 @@
 heat_template_version: 2013-05-23
 
-description: Template to deploy a single user data instance (MySQL + Apache)
+description: Template to deploy a single user data instance with two IP
 
 parameters:
  
@@ -18,7 +18,10 @@ parameters:
     default: m1.small
     constraints:
       - allowed_values: [m1.tiny, m1.small, m1.medium, m1.large]
-  shared_net_id:
+  private_net_id:
+    type: string
+    description: ID of private sub network into which servers get deployed
+  ext_net_id:
     type: string
     description: ID of private sub network into which servers get deployed
 
@@ -36,18 +39,18 @@ resources:
   instance_port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_param: shared_net_id }
+      network_id: { get_param: private_net_id }
 
   user_floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
-      floating_network_id: { get_param: shared_net_id }
+      floating_network_id: { get_param: ext_net_id }
       port_id: { get_resource: instance_port }
 
 outputs:
   instance_ip:
-    description: The Public IP address of the deployed instance
-    value: { get_attr: [floating_ip_instance,first_address] }
+    description: The IP address of the deployed instance
+    value: { get_attr: [floating_ip_instance, first_address] }
   instance_floating_ip:
     description: The floating IP address of the deployed instance
     value: { get_attr: [user_floating_ip, floating_ip_address] }
