@@ -21,7 +21,7 @@ parameters:
   db_name:
     type: string
     description: Database name
-    default: massdatabase
+    default: tempdatabase
     constraints:
       - length: {min: 4, max: 64}
       - allowed_pattern: '[a-zA-Z][a-zA-Z0-9]*'
@@ -45,12 +45,9 @@ parameters:
         description: admin account password  must be between 5 and 41 characters
       - allowed_pattern: '[a-zA-Z0-9]*'
         description: db_password must contain only alphanumeric characters
-  private_net_id:
+  shared_net_id:
     type: string
     description: ID of private sub network into which servers get deployed
-  public_net_id:
-    type: string
-    description: ID of public network for which floating IP addresses will be allocated
   db_root_password:
     type: string
     description: Root password for MySQL
@@ -107,12 +104,12 @@ resources:
   user_data_instance_port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_param: private_net_id }
+      network_id: { get_param: shared_net_id }
 
   user_data_instance_floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
-      floating_network_id: { get_param: public_net_id }
+      floating_network_id: { get_param: shared_net_id }
       port_id: { get_resource: user_data_instance_port }
 
 outputs:
