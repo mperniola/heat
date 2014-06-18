@@ -106,13 +106,7 @@ resources:
     properties:
       network_id: { get_param: shared_net_id }
 
-  user_data_instance_floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network_id: { get_param: shared_net_id }
-      port_id: { get_resource: user_data_instance_port }
-
 outputs:
-  instance_floating_ip:
-    description: The Public IP address of the deployed instance
-    value: { get_attr: [user_data_instance_floating_ip, floating_ip_address] }
+  instance_ip:
+    description: The IP address of the deployed instance
+    value: { get_attr: [user_data_instance, first_address] }
