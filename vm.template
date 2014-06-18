@@ -39,6 +39,6 @@ server1_port:
       network_id: { get_param: shared_net_id }
 
 outputs:
-  instance_ip:
+  server1_ip:
     description: The Public IP address of the deployed instance
-    value: { get_attr: [server1_port, ip_address] }
+    value: { get_attr: [my_instance, first_address] }
