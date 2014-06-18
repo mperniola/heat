@@ -33,12 +33,12 @@ resources:
       networks:
         - port: { get_resource: server1_port }
  
-server1_port:
-   type: OS::Neutron::Port
-   properties:
+  server1_port:
+    type: OS::Neutron::Port
+    properties:
       network_id: { get_param: shared_net_id }
 
 outputs:
-  server1_ip:
-    description: The Public IP address of the deployed instance
+  instance_ip:
+    description: The IP address of the deployed instance
     value: { get_attr: [my_instance, first_address] }
