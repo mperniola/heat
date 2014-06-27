@@ -18,9 +18,9 @@ parameters:
     label: Instance Type
     description: Type of instance (flavor) to be used
     default: m1.small
-  shared_net_id:
+  net_id:
     type: string
-    description: ID of shared sub network into which servers get deployed
+    description: ID of the network where servers shall be deployed
 
 resources:
   my_instance:
@@ -36,7 +36,7 @@ resources:
   server1_port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_param: shared_net_id }
+      network_id: { get_param: net_id }
 
 outputs:
   instance_ip:
