@@ -26,9 +26,9 @@ parameters:
     constraints:
       - range: { min: 1, max: 1024 }
         description: must be between 1 and 1024 Gb.
-  shared_net_id:
+  net_id:
     type: string
-    description: ID of public sub network into which servers get deployed
+    description: ID of the network where servers will get deployed
 
 resources:
   my_instance:
@@ -54,9 +54,9 @@ resources:
   server1_port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_param: shared_net_id }
+      network_id: { get_param: net_id }
 
 outputs:
   instance_ip:
     description: Public IP address of the newly created Nova instance.
-    value: { get_attr: [my_instance, server1_port] }
+    value: { get_attr: [my_instance, first_address] }
